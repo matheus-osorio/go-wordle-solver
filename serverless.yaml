@@ -1,0 +1,20 @@
+service: wordle-solver
+
+plugins:
+  - serverless-offline
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: go1.x
+  profile: personal
+
+custom:
+  serverless-offline:
+    httpPort: 4000
+
+resources:
+  - ${file(sls/resources/s3.yaml)}
+
+functions:
+  - ${file(sls/functions/functions.yaml)}

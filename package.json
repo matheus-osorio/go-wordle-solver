@@ -1,0 +1,16 @@
+{
+  "name": "go-wordle-solver",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "serverless": "^3.26.0",
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "serverless-offline": "^12.0.4"
+  }
+}

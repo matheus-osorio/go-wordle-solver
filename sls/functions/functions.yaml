@@ -1,0 +1,28 @@
+FilterList:
+    handler: ./bin/filterList
+    package:
+      include:
+        - ./bin/filterList
+    events:
+      - http:
+          method: POST
+          path: filter
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - 's3:GetObject'
+        Resource:
+          - !GetAtt WordleLanguagesBucket.Arn
+    environment:
+      BUCKET_NAME: !Ref WordleLanguagesBucket
+    
+
+GetFullList:
+  handler: ./bin/getFullList
+  package:
+    include:
+      - ./bin/getFullList
+  events:
+    - http:
+        method: GET
+        path: list
