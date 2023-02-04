@@ -14,7 +14,7 @@ func Test_ShouldGetWordScore(t *testing.T) {
 		WordSize: 5,
 	}
 
-	scoreSystem.CreateScoreTable()
+	scoreSystem.createScoreTable()
 	type Test struct {
 		EntryObject   string
 		LetterScore   float64
@@ -50,7 +50,7 @@ func Test_ShouldGetWordScore(t *testing.T) {
 
 	for _, expectedWords := range testEntries {
 		// act
-		letterScore, positionScore := scoreSystem.GetWordScore(expectedWords.EntryObject)
+		letterScore, positionScore := scoreSystem.getWordScore(expectedWords.EntryObject)
 
 		// assert
 		if expectedWords.PositionScore != positionScore {
@@ -74,7 +74,7 @@ func Test_ShouldCreateScoreTable(t *testing.T) {
 	}
 
 	// act
-	scoreSystem.CreateScoreTable()
+	scoreSystem.createScoreTable()
 
 	// assert
 	if score := scoreSystem.ScorePoints[0]['a']; score != 3 {
@@ -96,8 +96,8 @@ func Test_ShouldSetScores(t *testing.T) {
 		WordSize: 5,
 	}
 
-	score.CreateScoreTable()
-	score.SetScores()
+	score.createScoreTable()
+	score.setScores()
 
 	if len(score.Points) != 3 {
 		t.Errorf("Expected score list to be the same size as word list. Got %d", len(score.Points))

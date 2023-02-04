@@ -16,6 +16,7 @@ type S3Getter struct {
 	Language string
 }
 
+// Gets word from a pre-determined source on S3. The bucket name can be change by setting the "BUCKET_NAME" environment variable
 func (getter S3Getter) GetWords() []string {
 	sess := session.Must(session.NewSession())
 

@@ -10,6 +10,7 @@ type WordFilter struct {
 	Rules []Rule
 }
 
+// Turns the simple filter list into an usable filter option
 func (filter *WordFilter) CreateFilter(filterList []entry.Filter) {
 	wordMap := map[rune]Rule{}
 
@@ -41,7 +42,8 @@ func (filter *WordFilter) CreateFilter(filterList []entry.Filter) {
 	}
 }
 
-func (filter WordFilter) IsWordValid(word string) bool {
+// Checks if the word is valid according to the filter options
+func (filter WordFilter) isWordValid(word string) bool {
 	for _, rule := range filter.Rules {
 		letter := rule.Letter
 		for _, index := range rule.In {
@@ -69,9 +71,10 @@ func (filter WordFilter) IsWordValid(word string) bool {
 	return true
 }
 
+// Checks if word is valid, appends the ones that are
 func (filter *WordFilter) FilterWords(wordList []string) (filteredWords []string) {
 	for _, word := range wordList {
-		if filter.IsWordValid(word) {
+		if filter.isWordValid(word) {
 			filteredWords = append(filteredWords, word)
 		}
 	}

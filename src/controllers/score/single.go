@@ -13,7 +13,7 @@ type SingleScoreSystem struct {
 	WordSize    int
 }
 
-func (score SingleScoreSystem) GetWordScore(word string) (letterScore, positionScore float64) {
+func (score SingleScoreSystem) getWordScore(word string) (letterScore, positionScore float64) {
 	passedWords := map[rune]bool{}
 	for index, letter := range word {
 		positionScore += score.ScorePoints[index][letter]
@@ -35,7 +35,7 @@ func (score SingleScoreSystem) GetWordScore(word string) (letterScore, positionS
 	return
 }
 
-func (score *SingleScoreSystem) CreateScoreTable() {
+func (score *SingleScoreSystem) createScoreTable() {
 	score.ScorePoints = make([]map[rune]float64, 0)
 	for i := 0; i < score.WordSize; i++ {
 		newMap := make(map[rune]float64)
@@ -48,12 +48,12 @@ func (score *SingleScoreSystem) CreateScoreTable() {
 	}
 }
 
-func (score *SingleScoreSystem) SetScores() {
+func (score *SingleScoreSystem) setScores() {
 	score.Points = ScoreList{}
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(len(score.WordList))
 	for _, word := range score.WordList {
-		letter, position := score.GetWordScore(word)
+		letter, position := score.getWordScore(word)
 		score.Points = append(score.Points, Score{
 			Word:     word,
 			Letter:   letter,
@@ -62,9 +62,10 @@ func (score *SingleScoreSystem) SetScores() {
 	}
 }
 
+// Scores all the words and gives the score back
 func (score *SingleScoreSystem) GetBestWords() []ScoreList {
-	score.CreateScoreTable()
-	score.SetScores()
+	score.createScoreTable()
+	score.setScores()
 	score.Points = score.Points.SortByScore()
 	scoreList := []ScoreList{
 		score.Points,

@@ -14,6 +14,7 @@ type WordPicker struct {
 	WordSize uint
 }
 
+// Filters word by it's size
 func (picker *WordPicker) SelectWordsBySize() {
 	selectedWords := []string{}
 	for _, name := range picker.WordList {
@@ -25,6 +26,7 @@ func (picker *WordPicker) SelectWordsBySize() {
 	picker.WordList = selectedWords
 }
 
+// Replaces latin characters with non-accentuated version
 func (picker *WordPicker) ReplaceLatinCharacters() {
 	runeTransformer := runes.Remove(runes.In(unicode.Mn))
 	transformer := transform.Chain(norm.NFD, runeTransformer, norm.NFC)

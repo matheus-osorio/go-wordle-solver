@@ -12,10 +12,12 @@ type Score struct {
 
 type ScoreList []Score
 
+// Sorts without knowing method
 func (score ScoreList) SortByScore() ScoreList {
 	return score.QuickSort(score)
 }
 
+// Uses quick sort to get the best words
 func (score ScoreList) QuickSort(points ScoreList) ScoreList {
 	if len(points) < 2 {
 		return points
@@ -52,6 +54,7 @@ func (score ScoreList) QuickSort(points ScoreList) ScoreList {
 	return orderedArr
 }
 
+// Compares the scores
 func (score ScoreList) compareScores(scoreObj1, scoreObj2 Score) int {
 	score1 := scoreObj1.Letter + scoreObj1.Position
 	score2 := scoreObj2.Letter + scoreObj2.Position
@@ -67,6 +70,7 @@ func (score ScoreList) compareScores(scoreObj1, scoreObj2 Score) int {
 	return 0
 }
 
+// Gets only the top words (currently unnutilized)
 func (score ScoreList) GetTop(number int) ScoreList {
 	if len(score) <= number {
 		return score

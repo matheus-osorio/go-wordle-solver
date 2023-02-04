@@ -86,12 +86,12 @@ func Test_ShouldVerifyValidWord(t *testing.T) {
 	// act
 	filter.CreateFilter(rawFilter)
 
-	result1 := filter.IsWordValid("bbaad")
-	result2 := filter.IsWordValid("aabdd")
-	result3 := filter.IsWordValid("abaad")
-	result4 := filter.IsWordValid("ababd")
-	result5 := filter.IsWordValid("abacd")
-	result6 := filter.IsWordValid("abadd")
+	result1 := filter.isWordValid("bbaad")
+	result2 := filter.isWordValid("aabdd")
+	result3 := filter.isWordValid("abaad")
+	result4 := filter.isWordValid("ababd")
+	result5 := filter.isWordValid("abacd")
+	result6 := filter.isWordValid("abadd")
 
 	// assert
 

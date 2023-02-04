@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// Factory for the getters package.
 func CreateGetter(wordSize uint, language string) GetterInterface {
 	environmentString := os.Getenv("IS_OFFLINE")
 	isOffline, err := strconv.ParseBool(environmentString)
