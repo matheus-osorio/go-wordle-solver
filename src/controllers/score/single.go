@@ -17,7 +17,6 @@ func (score SingleScoreSystem) getWordScore(word string) (letterScore, positionS
 	passedWords := map[rune]bool{}
 	for index, letter := range word {
 		positionScore += score.ScorePoints[index][letter]
-
 		if !passedWords[letter] {
 			specificWordScore := 0.0
 			for i := 0; i < score.WordSize; i++ {
@@ -27,8 +26,11 @@ func (score SingleScoreSystem) getWordScore(word string) (letterScore, positionS
 				}
 			}
 			passedWords[letter] = true
-			specificWordScore /= math.Pow(float64(score.WordSize-strings.Count(word, string(letter))), 2)
-			letterScore += specificWordScore
+
+			if specificWordScore > 0 {
+				specificWordScore /= math.Pow(float64(score.WordSize-strings.Count(word, string(letter))), 2)
+				letterScore += specificWordScore
+			}
 		}
 
 	}

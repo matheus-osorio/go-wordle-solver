@@ -7,7 +7,7 @@ plugins:
 provider:
   name: aws
   runtime: go1.x
-  profile: personal
+  profile: ${param:profile}
 
 custom:
   serverless-offline:

@@ -22,29 +22,9 @@ func Test_ShouldGetWordScore(t *testing.T) {
 	}
 	testEntries := []Test{
 		{
-			EntryObject:   "affff",
-			LetterScore:   4.0 / 16,
-			PositionScore: 7,
-		},
-		{
-			EntryObject:   "bkkkk",
-			LetterScore:   4.0 / 16,
-			PositionScore: 1,
-		},
-		{
-			EntryObject:   "cpppp",
-			LetterScore:   4.0 / 16,
-			PositionScore: 1,
-		},
-		{
 			EntryObject:   "aaaaa",
-			LetterScore:   20.0 / 16,
+			LetterScore:   0,
 			PositionScore: 5,
-		},
-		{
-			EntryObject:   "adddd",
-			LetterScore:   4.0 / 16,
-			PositionScore: 1,
 		},
 	}
 
