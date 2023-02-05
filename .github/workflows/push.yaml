@@ -15,7 +15,7 @@ jobs:
         with:
           go-version: '1.19'
       - name: install dependencies
-        run: go install
+        run: go mod download
       - name: test go code
         run: go test ./...
   deploycode:
@@ -29,7 +29,7 @@ jobs:
         with:
           go-version: '1.19'
       - name: install go dependencies
-        run: go install
+        run: go mod download
       - name: package go lambdas
         run: bash package.sh
       - name: install serverless dependencies
