@@ -26,27 +26,23 @@ import (
  */
 func handler(event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	wordSizeHeader, ok := event.Headers["word-size"]
+
 	if !ok {
 		return events.APIGatewayProxyResponse{Body: "Header word-size is required!", StatusCode: http.StatusBadRequest}, nil
 	}
+
 	wordSize, err := strconv.Atoi(wordSizeHeader)
-
-	if err != nil {
-		return events.APIGatewayProxyResponse{Body: "Header word-size should be an integer!", StatusCode: http.StatusBadRequest}, nil
-	}
-
 	if err != nil {
 		return events.APIGatewayProxyResponse{Body: "Header word-size should be an integer!", StatusCode: http.StatusBadRequest}, nil
 	}
 
 	var eventBody entry.FilterListBodyObject
-
 	err = json.Unmarshal([]byte(event.Body), &eventBody)
-
 	if err != nil {
 		responseBody := fmt.Sprintf("Body could not be parsed! Error: %v", err)
 		return events.APIGatewayProxyResponse{Body: responseBody, StatusCode: http.StatusBadRequest}, nil
 	}
+
 	solver := controllers.ControllerFactory(wordSize, "")
 	wordList := solver.FilterWords(eventBody)
 	bodyResponse, _ := json.Marshal(wordList)

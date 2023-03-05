@@ -8,30 +8,49 @@ import (
 )
 
 type WordleSolver struct {
-	Getter   getters.GetterInterface
-	Score    score.ScoreInterface
-	Filter   filter.WordFilter
-	WordSize int
+	getter   getters.GetterInterface
+	score    score.ScoreInterface
+	filter   filter.WordFilter
+	wordSize int
+}
+
+func (solver WordleSolver) getWords() []string {
+	return solver.getter.GetWords()
+}
+
+func (solver *WordleSolver) createScore(words [][]string) {
+	solver.score = score.CreateScore(words, solver.wordSize)
+}
+
+func (solver WordleSolver) getBestWords() []score.ScoreList {
+	return solver.score.GetBestWords()
+}
+
+func (solver WordleSolver) filterWords(rules []entry.ObjectRuleList) [][]string {
+	wordList := [][]string{}
+
+	for _, ruleList := range rules {
+		solver.filter.CreateFilter(ruleList.Filter)
+		wordList = append(wordList, solver.filter.FilterWords(ruleList.Words))
+	}
+
+	return wordList
 }
 
 // Gets an unfiltered word list
 func (solver WordleSolver) GetFullWordList() []score.ScoreList {
-	words := solver.Getter.GetWords()
-	solver.Score = score.CreateScore([][]string{words}, solver.WordSize)
+	words := solver.getWords()
 
-	return solver.Score.GetBestWords()
+	solver.createScore([][]string{words})
+
+	return solver.getBestWords()
 }
 
 // Receives an entry object of lists to filter
 func (solver WordleSolver) FilterWords(entry entry.FilterListBodyObject) []score.ScoreList {
-	newWordList := [][]string{}
+	wordList := solver.filterWords(entry.Rules)
 
-	for _, ruleList := range entry.Rules {
-		solver.Filter.CreateFilter(ruleList.Filter)
-		newWordList = append(newWordList, solver.Filter.FilterWords(ruleList.Words))
-	}
+	solver.createScore(wordList)
 
-	solver.Score = score.CreateScore(newWordList, solver.WordSize)
-
-	return solver.Score.GetBestWords()
+	return solver.getBestWords()
 }

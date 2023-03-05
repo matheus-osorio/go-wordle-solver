@@ -7,9 +7,9 @@ import (
 
 func ControllerFactory(wordSize int, language string) WordleSolver {
 	return WordleSolver{
-		Getter:   getters.CreateGetter(uint(wordSize), language),
-		Score:    nil,
-		Filter:   filter.WordFilter{},
-		WordSize: wordSize,
+		getter:   getters.CreateGetter(uint(wordSize), language),
+		score:    nil,
+		filter:   filter.WordFilter{},
+		wordSize: wordSize,
 	}
 }
