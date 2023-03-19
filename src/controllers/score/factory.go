@@ -7,8 +7,9 @@ func CreateScore(wordList [][]string, wordSize int) ScoreInterface {
 	switch len(wordList) {
 	case 1:
 		return &SingleScoreSystem{
-			WordList: wordList[0],
-			WordSize: wordSize,
+			WordList:   wordList[0],
+			WordSize:   wordSize,
+			TotalWords: len(wordList[0]),
 		}
 
 	default:

@@ -1,6 +1,7 @@
 package score
 
 import (
+	"math"
 	"testing"
 )
 
@@ -10,36 +11,34 @@ func Test_ShouldGetWordScore(t *testing.T) {
 	wordList := []string{"aaaaa", "bbbbb", "ccccc"}
 
 	scoreSystem := SingleScoreSystem{
-		WordList: wordList,
-		WordSize: 5,
+		WordList:   wordList,
+		WordSize:   5,
+		TotalWords: 3,
 	}
 
 	scoreSystem.createScoreTable()
 	type Test struct {
-		EntryObject   string
-		LetterScore   float64
-		PositionScore float64
+		EntryObject string
+		Score       float64
 	}
 	testEntries := []Test{
 		{
-			EntryObject:   "aaaaa",
-			LetterScore:   0,
-			PositionScore: 5,
+			EntryObject: "aaaaa",
+			Score:       5 * (2.0*(1.0/3.0) + 0*(0/3.0) + 1.0*(2.0/3.0)),
 		},
 	}
 
+	scoreSystem.createScoreTable()
+
 	for _, expectedWords := range testEntries {
 		// act
-		letterScore, positionScore := scoreSystem.getWordScore(expectedWords.EntryObject)
+		score := scoreSystem.getWordScore(expectedWords.EntryObject)
 
 		// assert
-		if expectedWords.PositionScore != positionScore {
-			t.Errorf("ERROR: Expected %s position score to be: %f. Got: %f", expectedWords.EntryObject, expectedWords.PositionScore, positionScore)
+		if math.Round(expectedWords.Score) != math.Round(score) {
+			t.Errorf("ERROR: Expected %s score to be: %f. Got: %f", expectedWords.EntryObject, expectedWords.Score, score)
 		}
 
-		if expectedWords.LetterScore != letterScore {
-			t.Errorf("ERROR: Expected %s letter score to be: %f. Got: %f", expectedWords.EntryObject, expectedWords.LetterScore, letterScore)
-		}
 	}
 }
 
@@ -57,15 +56,15 @@ func Test_ShouldCreateScoreTable(t *testing.T) {
 	scoreSystem.createScoreTable()
 
 	// assert
-	if score := scoreSystem.ScorePoints[0]['a']; score != 3 {
+	if score := scoreSystem.PositionPoints[0]['a']; score != 3 {
 		t.Errorf("Expected a score of 3, found %f", score)
 	}
 
-	if score := scoreSystem.ScorePoints[0]['b']; score != 0 {
+	if score := scoreSystem.PositionPoints[0]['b']; score != 0 {
 		t.Errorf("Expected a score of 0, found %f", score)
 	}
 
-	if score := scoreSystem.ScorePoints[4]['c']; score != 1 {
+	if score := scoreSystem.PositionPoints[4]['c']; score != 1 {
 		t.Errorf("Expected a score of 1, found %f", score)
 	}
 }

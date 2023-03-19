@@ -7,21 +7,19 @@ func Test_ShouldCompareScores(t *testing.T) {
 	// arrange
 	t.Parallel()
 	score1 := Score{
-		Letter:   1.0,
-		Position: 0.0,
+		Points: 1.0,
 	}
 
 	score2 := Score{
-		Letter:   1.0,
-		Position: 1.0,
+		Points: 2.0,
 	}
 
 	// act
 	result1 := score.compareScores(score1, score2)
-	score1.Position = 1.0
+	score1.Points = 2.0
 
 	result2 := score.compareScores(score1, score2)
-	score1.Position = 2.0
+	score1.Points = 3.0
 
 	result3 := score.compareScores(score1, score2)
 
@@ -46,15 +44,15 @@ func Test_ShouldSortByScore(t *testing.T) {
 	scoreList := ScoreList{
 		{
 			Word:   "word1",
-			Letter: 0.0,
+			Points: 0.0,
 		},
 		{
 			Word:   "word2",
-			Letter: 5.0,
+			Points: 5.0,
 		},
 		{
 			Word:   "word3",
-			Letter: 10.0,
+			Points: 10.0,
 		},
 	}
 

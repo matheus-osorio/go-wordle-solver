@@ -1,65 +1,62 @@
 package score
 
-import (
-	"math"
-	"strings"
-	"sync"
-)
-
 type SingleScoreSystem struct {
-	ScorePoints []map[rune]float64
-	Points      ScoreList
-	WordList    []string
-	WordSize    int
+	PositionPoints []map[rune]float64
+	LetterPoints   map[rune]float64
+	Points         ScoreList
+	WordList       []string
+	WordSize       int
+	TotalWords     int
 }
 
-func (score SingleScoreSystem) getWordScore(word string) (letterScore, positionScore float64) {
-	passedWords := map[rune]bool{}
+func (score SingleScoreSystem) getWordScore(word string) float64 {
+	var greenScore, yellowScore, greyScore float64
+
 	for index, letter := range word {
-		positionScore += score.ScorePoints[index][letter]
-		if !passedWords[letter] {
-			specificWordScore := 0.0
-			for i := 0; i < score.WordSize; i++ {
 
-				if word[i] != byte(letter) {
-					specificWordScore += score.ScorePoints[i][letter]
-				}
-			}
-			passedWords[letter] = true
+		totalWords := float64(score.TotalWords)
+		currentPositionScore := score.PositionPoints[index][letter]
+		currentWordScore := score.LetterPoints[letter]
+		wordsNotInPosition := (currentWordScore - currentPositionScore)
+		wordsWithoutLetter := (totalWords - currentPositionScore)
 
-			if specificWordScore > 0 {
-				specificWordScore /= math.Pow(float64(score.WordSize-strings.Count(word, string(letter))), 2)
-				letterScore += specificWordScore
-			}
-		}
+		greenProbability := currentPositionScore / totalWords
+		yellowProbability := wordsNotInPosition / totalWords
+		greyProbability := wordsWithoutLetter / totalWords
 
+		greenScore += (totalWords - currentPositionScore) * greenProbability
+		yellowScore += (totalWords - wordsNotInPosition) * yellowProbability
+		greyScore += (totalWords - wordsWithoutLetter) * greyProbability
 	}
-	return
+	return greenScore + yellowScore + greyScore
 }
 
 func (score *SingleScoreSystem) createScoreTable() {
-	score.ScorePoints = make([]map[rune]float64, 0)
+	score.PositionPoints = make([]map[rune]float64, 0)
+	score.LetterPoints = make(map[rune]float64, 0)
+
 	for i := 0; i < score.WordSize; i++ {
 		newMap := make(map[rune]float64)
-		score.ScorePoints = append(score.ScorePoints, newMap)
+		score.PositionPoints = append(score.PositionPoints, newMap)
 	}
 	for _, word := range score.WordList {
 		for index, letter := range word {
-			score.ScorePoints[index][letter]++
+			score.PositionPoints[index][letter]++
+		}
+		letterSet := createSet(word)
+
+		for _, letter := range letterSet {
+			score.LetterPoints[letter]++
 		}
 	}
 }
 
 func (score *SingleScoreSystem) setScores() {
 	score.Points = ScoreList{}
-	var waitGroup sync.WaitGroup
-	waitGroup.Add(len(score.WordList))
 	for _, word := range score.WordList {
-		letter, position := score.getWordScore(word)
 		score.Points = append(score.Points, Score{
-			Word:     word,
-			Letter:   letter,
-			Position: position,
+			Word:   word,
+			Points: score.getWordScore(word),
 		})
 	}
 }
