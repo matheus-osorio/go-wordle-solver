@@ -1,21 +1,23 @@
 FilterList:
-    handler: ./bin/filterList
-    package:
-      include:
-        - ./bin/filterList
-    events:
-      - http:
-          method: POST
-          path: filter
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - 's3:*'
-        Resource:
-          - !GetAtt WordleLanguagesBucket.Arn
-    environment:
-      BUCKET_NAME: !Ref WordleLanguagesBucket
-      IS_OFFLINE: false
+  handler: ./bin/filterList
+  package:
+    include:
+      - ./bin/filterList
+  events:
+    - http:
+        method: POST
+        path: filter
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - 's3:List*'
+        - 's3:Read*'
+        - 's3:Get*'
+      Resource:
+        - !GetAtt WordleLanguagesBucket.Arn
+  environment:
+    BUCKET_NAME: !Ref WordleLanguagesBucket
+    IS_OFFLINE: false
     
 
 GetFullList:
@@ -30,9 +32,9 @@ GetFullList:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - 's3:GetObject'
-        - 's3:GetBucketLocation'
-        - 's3:ListBucket'
+        - 's3:List*'
+        - 's3:Read*'
+        - 's3:Get*'
       Resource:
         - !GetAtt WordleLanguagesBucket.Arn
   environment:
