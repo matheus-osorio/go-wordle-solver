@@ -11,7 +11,6 @@ FilterList:
     - Effect: Allow
       Action:
         - 's3:*'
-        - 's3-obect-lambda:*'
       Resource:
         - !GetAtt WordleLanguagesBucket.Arn
   environment:
@@ -31,7 +30,7 @@ GetFullList:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - '*'
+        - 's3:*'
       Resource:
         - !GetAtt WordleLanguagesBucket.Arn
   environment:
