@@ -10,7 +10,7 @@ FilterList:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - 's3:*'
+        - 's3:GetObject'
       Resource:
         - !GetAtt WordleLanguagesBucket.Arn
   environment:
@@ -30,7 +30,7 @@ GetFullList:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - 's3:*'
+        - 's3:GetObject'
       Resource:
         - !GetAtt WordleLanguagesBucket.Arn
   environment:
