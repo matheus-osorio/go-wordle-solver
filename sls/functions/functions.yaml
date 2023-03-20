@@ -11,6 +11,8 @@ FilterList:
       - Effect: Allow
         Action:
           - 's3:GetObject'
+          - 's3:GetBucketLocation'
+          - 's3:ListBucket'
         Resource:
           - !GetAtt WordleLanguagesBucket.Arn
     environment:
@@ -31,6 +33,8 @@ GetFullList:
     - Effect: Allow
       Action:
         - 's3:GetObject'
+        - 's3:GetBucketLocation'
+        - 's3:ListBucket'
       Resource:
         - !GetAtt WordleLanguagesBucket.Arn
   environment:
