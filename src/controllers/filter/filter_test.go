@@ -45,7 +45,7 @@ func Test_ShouldCreateFilter(t *testing.T) {
 		t.Errorf("The filter was supposed to find 2 instances of the letter in the filter")
 	}
 
-	if specificFilter.In[0] != 0 {
+	if specificFilter.In == nil || specificFilter.In[0] != 0 {
 		t.Errorf("The filter was supposed to get the \"In\" rule to the first Index")
 	}
 
@@ -90,7 +90,7 @@ func Test_ShouldVerifyValidWord(t *testing.T) {
 	result3 := filter.isWordValid("abaad")
 	result4 := filter.isWordValid("ababd")
 	result5 := filter.isWordValid("abacd")
-	result6 := filter.isWordValid("abadd")
+	result6 := filter.isWordValid("abdad")
 
 	// assert
 
@@ -151,7 +151,7 @@ func Test_ShouldFilterWords(t *testing.T) {
 		"abaad", // out by rule: 3
 		"ababd", // out by rule: 4
 		"abacd", // out by rule: 5
-		"abadd", //valid
+		"abdad", //valid
 	}
 
 	// act
@@ -159,7 +159,7 @@ func Test_ShouldFilterWords(t *testing.T) {
 	filter.CreateFilter(rawFilter)
 	result := filter.FilterWords(wordList)
 
-	if value := len(result); value != 1 || result[0] != "abadd" {
+	if value := len(result); value != 1 || result[0] != "abdad" {
 		t.Errorf("Expected 1 word to not be filtered out. Got %d", value)
 	}
 }
