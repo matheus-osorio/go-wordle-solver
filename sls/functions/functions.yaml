@@ -15,6 +15,7 @@ FilterList:
           - !GetAtt WordleLanguagesBucket.Arn
     environment:
       BUCKET_NAME: !Ref WordleLanguagesBucket
+      IS_OFFLINE: false
     
 
 GetFullList:
@@ -26,3 +27,6 @@ GetFullList:
     - http:
         method: GET
         path: list
+  environment:
+    IS_OFFLINE: false
+    BUCKET_NAME: !Ref WordleLanguagesBucket
