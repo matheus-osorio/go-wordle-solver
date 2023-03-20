@@ -27,6 +27,12 @@ GetFullList:
     - http:
         method: GET
         path: list
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - 's3:GetObject'
+      Resource:
+        - !GetAtt WordleLanguagesBucket.Arn
   environment:
     IS_OFFLINE: false
     BUCKET_NAME: !Ref WordleLanguagesBucket
