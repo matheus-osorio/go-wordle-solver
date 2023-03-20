@@ -30,7 +30,9 @@ GetFullList:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - 's3:*'
+        - 's3:GetObject'
+        - 's3:GetBucketLocation'
+        - 's3:ListBucket'
       Resource:
         - !GetAtt WordleLanguagesBucket.Arn
   environment:

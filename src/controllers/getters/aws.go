@@ -28,7 +28,6 @@ func (getter S3Getter) GetWords() []string {
 	}
 
 	bucketName := os.Getenv("BUCKET_NAME")
-	fmt.Println("bucket:", bucketName)
 	filename := getter.Language + "-words.txt"
 	size, err := downloader.Download(f, &s3.GetObjectInput{
 		Bucket: aws.String(bucketName),
@@ -37,7 +36,7 @@ func (getter S3Getter) GetWords() []string {
 
 	fmt.Println("Got file of size:", size)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("Error: %v on file: %s", err, filename)
 		panic("Error while downloading file")
 	}
 	f.Close()
