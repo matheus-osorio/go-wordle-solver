@@ -31,6 +31,7 @@ func (filter *WordFilter) CreateFilter(filterList []entry.Filter) {
 			current.NumberOfTimes++
 
 		case entry.GREY:
+			current.NotIn = append(current.NotIn, index)
 			current.Exact = true
 		}
 

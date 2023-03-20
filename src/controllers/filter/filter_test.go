@@ -37,7 +37,6 @@ func Test_ShouldCreateFilter(t *testing.T) {
 
 	// assert
 	specificFilter := filter.Rules[0]
-
 	if !specificFilter.Exact {
 		t.Errorf("The filter was supposed to qualify this rule as Exact")
 	}
