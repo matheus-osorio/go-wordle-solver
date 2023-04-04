@@ -157,9 +157,13 @@ func Test_ShouldFilterWords(t *testing.T) {
 	// act
 	filter := WordFilter{}
 	filter.CreateFilter(rawFilter)
-	result := filter.FilterWords(wordList)
+	filtered, removed := filter.FilterWords(wordList)
 
-	if value := len(result); value != 1 || result[0] != "abdad" {
+	if value := len(filtered); value != 1 || filtered[0] != "abdad" {
 		t.Errorf("Expected 1 word to not be filtered out. Got %d", value)
+	}
+
+	if len(removed) != 5 {
+		t.Errorf("Should have removed 5 words!")
 	}
 }

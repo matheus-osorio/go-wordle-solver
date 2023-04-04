@@ -1,12 +1,12 @@
 package score
 
 type ScoreInterface interface {
-	GetBestWords() []ScoreList
+	GetBestWords() ([]ScoreList, []ScoreList)
 }
 
 type Score struct {
-	Word   string
-	Points float64
+	Word   string  `json:"word"`
+	Points float64 `json:"points"`
 }
 
 type ScoreList []Score

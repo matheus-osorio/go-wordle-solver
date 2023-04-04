@@ -73,10 +73,12 @@ func (filter WordFilter) isWordValid(word string) bool {
 }
 
 // Checks if word is valid, appends the ones that are
-func (filter *WordFilter) FilterWords(wordList []string) (filteredWords []string) {
+func (filter *WordFilter) FilterWords(wordList []string) (filteredWords, excludedWords []string) {
 	for _, word := range wordList {
 		if filter.isWordValid(word) {
 			filteredWords = append(filteredWords, word)
+		} else {
+			excludedWords = append(excludedWords, word)
 		}
 	}
 

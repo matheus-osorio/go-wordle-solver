@@ -29,6 +29,7 @@ type Filter struct {
 Filter rules + word list. Holds a single list of words.
 */
 type ObjectRuleList struct {
-	Filter []Filter `json:"filter"`
-	Words  []string `json:"words"`
+	Filter       []Filter `json:"filter"`
+	Words        []string `json:"words"`
+	RemovedWords []string `json:"removedWords"`
 }

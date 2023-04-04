@@ -78,7 +78,7 @@ func Test_ShouldSetScores(t *testing.T) {
 	score.createScoreTable()
 	score.setScores()
 
-	if len(score.Points) != 3 {
-		t.Errorf("Expected score list to be the same size as word list. Got %d", len(score.Points))
+	if len(score.FilteredPoints) != 3 {
+		t.Errorf("Expected score list to be the same size as word list. Got %d", len(score.FilteredPoints))
 	}
 }

@@ -3,8 +3,10 @@ package score
 type SingleScoreSystem struct {
 	PositionPoints []map[rune]float64
 	LetterPoints   map[rune]float64
-	Points         ScoreList
+	FilteredPoints ScoreList
+	RemovedPoints  ScoreList
 	WordList       []string
+	RemovedList    []string
 	WordSize       int
 	TotalWords     int
 }
@@ -52,9 +54,17 @@ func (score *SingleScoreSystem) createScoreTable() {
 }
 
 func (score *SingleScoreSystem) setScores() {
-	score.Points = ScoreList{}
+	score.FilteredPoints = make(ScoreList, 0)
 	for _, word := range score.WordList {
-		score.Points = append(score.Points, Score{
+		score.FilteredPoints = append(score.FilteredPoints, Score{
+			Word:   word,
+			Points: score.getWordScore(word),
+		})
+	}
+
+	score.RemovedPoints = make(ScoreList, 0)
+	for _, word := range score.RemovedList {
+		score.RemovedPoints = append(score.RemovedPoints, Score{
 			Word:   word,
 			Points: score.getWordScore(word),
 		})
@@ -62,13 +72,18 @@ func (score *SingleScoreSystem) setScores() {
 }
 
 // Scores all the words and gives the score back
-func (score *SingleScoreSystem) GetBestWords() []ScoreList {
+func (score *SingleScoreSystem) GetBestWords() ([]ScoreList, []ScoreList) {
 	score.createScoreTable()
 	score.setScores()
-	score.Points = score.Points.SortByScore()
+	score.FilteredPoints = score.FilteredPoints.SortByScore()
 	scoreList := []ScoreList{
-		score.Points,
+		score.FilteredPoints,
 	}
 
-	return scoreList
+	score.RemovedPoints = score.RemovedPoints.SortByScore()
+	removedList := []ScoreList{
+		score.RemovedPoints,
+	}
+
+	return scoreList, removedList
 }

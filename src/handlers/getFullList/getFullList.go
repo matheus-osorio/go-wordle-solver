@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/matheus-osorio/go-term-solver/src/controllers"
 	"github.com/matheus-osorio/go-term-solver/src/entry"
+	"github.com/matheus-osorio/go-term-solver/src/response"
 )
 
 /*
@@ -40,8 +41,9 @@ func handler(event events.APIGatewayProxyRequest) (events.APIGatewayProxyRespons
 	}
 
 	solver := controllers.ControllerFactory(wordSize, language)
-	wordList := solver.GetFullWordList()
-	bodyResponse, _ := json.Marshal(wordList)
+	wordList, removedList := solver.GetFullWordList()
+	res := response.CreateResponse(wordList, removedList)
+	bodyResponse, _ := json.Marshal(res)
 	return events.APIGatewayProxyResponse{Body: string(bodyResponse), StatusCode: http.StatusOK}, nil
 }
 

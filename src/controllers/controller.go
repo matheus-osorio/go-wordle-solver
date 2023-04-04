@@ -18,39 +18,43 @@ func (solver WordleSolver) getWords() []string {
 	return solver.getter.GetWords()
 }
 
-func (solver *WordleSolver) createScore(words [][]string) {
-	solver.score = score.CreateScore(words, solver.wordSize)
+func (solver *WordleSolver) createScore(words [][]string, removedWords [][]string) {
+	solver.score = score.CreateScore(words, removedWords, solver.wordSize)
 }
 
-func (solver WordleSolver) getBestWords() []score.ScoreList {
+func (solver WordleSolver) getBestWords() ([]score.ScoreList, []score.ScoreList) {
 	return solver.score.GetBestWords()
 }
 
-func (solver WordleSolver) filterWords(rules []entry.ObjectRuleList) [][]string {
+func (solver WordleSolver) filterWords(rules []entry.ObjectRuleList) ([][]string, [][]string) {
 	wordList := [][]string{}
+	removedList := [][]string{}
 
 	for _, ruleList := range rules {
 		solver.filter.CreateFilter(ruleList.Filter)
-		wordList = append(wordList, solver.filter.FilterWords(ruleList.Words))
+		filteredWords, removedWords := solver.filter.FilterWords(ruleList.Words)
+		wordList = append(wordList, filteredWords)
+		removedWords = append(removedWords, ruleList.RemovedWords...)
+		removedList = append(removedList, removedWords)
 	}
 
-	return wordList
+	return wordList, removedList
 }
 
 // Gets an unfiltered word list
-func (solver WordleSolver) GetFullWordList() []score.ScoreList {
+func (solver WordleSolver) GetFullWordList() ([]score.ScoreList, []score.ScoreList) {
 	words := solver.getWords()
 
-	solver.createScore([][]string{words})
+	solver.createScore([][]string{words}, [][]string{{}})
 
 	return solver.getBestWords()
 }
 
 // Receives an entry object of lists to filter
-func (solver WordleSolver) FilterWords(entry entry.FilterListBodyObject) []score.ScoreList {
-	wordList := solver.filterWords(entry.Rules)
+func (solver WordleSolver) FilterWords(entry entry.FilterListBodyObject) ([]score.ScoreList, []score.ScoreList) {
+	wordList, removedList := solver.filterWords(entry.Rules)
 
-	solver.createScore(wordList)
+	solver.createScore(wordList, removedList)
 
 	return solver.getBestWords()
 }
